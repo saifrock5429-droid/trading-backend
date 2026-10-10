@@ -84,16 +84,16 @@ const paymentRoutes = require('./routes/paymentRoutes');
 
 const app = express();
 
-// 1. Configure CORS to allow only your frontend Vercel URL (and localhost for development)
+// Allowed Origins List (Live Frontend + Localhost)
 const allowedOrigins = [
+  'https://www.kingtradex.online',
   'https://xm-trading-git-main-saifrocks-projects.vercel.app',
-  'http://localhost:3000', // Update this if your local frontend runs on a different port (e.g., 5173 for Vite)
+  'http://localhost:3000',
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps, curl, or Postman)
       if (!origin) return callback(null, true);
       if (allowedOrigins.indexOf(origin) === -1) {
         const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
@@ -101,7 +101,7 @@ app.use(
       }
       return callback(null, true);
     },
-    credentials: true, // Enable cookies/authorization headers if needed
+    credentials: true,
   })
 );
 
