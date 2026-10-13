@@ -1,6 +1,3 @@
-
-
-
 const mongoose = require('mongoose');
 
 const paymentSchema = new mongoose.Schema(
@@ -10,6 +7,9 @@ const paymentSchema = new mongoose.Schema(
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     userEmail: { type: String, default: '' },
     amountINR: { type: Number, default: 0 },
+    baseUSD: { type: Number, default: 0 },
+    bonusUSD: { type: Number, default: 0 },
+    bonusPercent: { type: Number, default: 10 },
     amountUSD: { type: Number, default: 0 },
     amount: { type: Number, default: 0 },
     creditedAmount: { type: Number, default: 0 },
