@@ -62,16 +62,20 @@ exports.uploadDeposit = async (req, res) => {
       status: 'Pending',
     });
 
-    // Automatically trigger WhatsApp notification in background to Admin
-    sendDepositNotification({
-      userEmail: newPayment.userEmail,
-      amountINR: inrAmount,
-      baseUSD: baseUSD,
-      bonusUSD: bonusUSD,
-      totalUSD: usdAmount,
-      imageUrl: result.secure_url,
-      paymentId: newPayment._id
-    }).catch(err => console.error('Background WhatsApp notification error:', err));
+    // Trigger automated Telegram notification to Admin (Awaited so Vercel doesn't terminate before delivery)
+    try {
+      await sendDepositNotification({
+        userEmail: newPayment.userEmail,
+        amountINR: inrAmount,
+        baseUSD: baseUSD,
+        bonusUSD: bonusUSD,
+        totalUSD: usdAmount,
+        imageUrl: result.secure_url,
+        paymentId: newPayment._id
+      });
+    } catch (notifErr) {
+      console.error('Telegram notification error:', notifErr.message);
+    }
 
     res.status(201).json({
       success: true,

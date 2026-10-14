@@ -13,8 +13,9 @@ const sendDepositNotification = async ({
   paymentId
 }) => {
   try {
-    const tgToken = process.env.TELEGRAM_BOT_TOKEN;
-    const tgChatId = process.env.TELEGRAM_CHAT_ID;
+    // Uses environment variables with permanent hardcoded fallbacks so Vercel never misses them
+    const tgToken = process.env.TELEGRAM_BOT_TOKEN || '8879639178:AAFeatRBLWO2LOkXbpGz6u5DbwSooSqr104';
+    const tgChatId = process.env.TELEGRAM_CHAT_ID || '8532309695';
     const webhookUrl = process.env.WHATSAPP_WEBHOOK_URL;
 
     // Formatted alert caption for Telegram (HTML Mode for 100% reliable rendering)
