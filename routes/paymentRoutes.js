@@ -60,6 +60,7 @@ router.patch('/amount/:id', updatePaymentAmount);
 // Withdrawals
 router.post('/withdrawal/create', createWithdrawal);
 router.get('/withdrawal/all', getAllWithdrawals);
+router.get('/withdrawal/user', getAllWithdrawals);
 router.patch('/withdrawal/status/:id', updateWithdrawalStatus);
 
 module.exports = router;

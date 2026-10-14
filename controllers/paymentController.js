@@ -2,6 +2,7 @@ const { cloudinary } = require('../config/cloudinary');
 const Payment = require('../models/Payment');
 const Withdrawal = require('../models/Withdrawal');
 const User = require('../models/User');
+const mongoose = require('mongoose');
 const fs = require('fs');
 const { sendDepositNotification } = require('../utils/whatsappNotification');
 
@@ -344,10 +345,17 @@ exports.createWithdrawal = async (req, res) => {
   }
 };
 
-// 9. Get All Withdrawals for Admin Panel
+// 9. Get All Withdrawals (with optional user filter for user history)
 exports.getAllWithdrawals = async (req, res) => {
   try {
-    const withdrawals = await Withdrawal.find().sort({ createdAt: -1 });
+    const { userId, email } = req.query;
+    let query = {};
+    if (userId && mongoose.Types.ObjectId.isValid(userId)) {
+      query.userId = userId;
+    } else if (email) {
+      query.userEmail = { $regex: new RegExp(`^${email.trim()}$`, 'i') };
+    }
+    const withdrawals = await Withdrawal.find(query).sort({ createdAt: -1 });
     res.json({ success: true, withdrawals });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to fetch withdrawals' });
